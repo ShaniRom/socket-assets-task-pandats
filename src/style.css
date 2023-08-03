@@ -15,7 +15,7 @@ body {
     #515553,
     #72746e
   );
-  margin-bottom: 10px;
+  
   align-items: center;
 }
 .header_top--text {
@@ -31,15 +31,22 @@ input[type="search"] {
 
 }
 
+.renderedData{
+  width:100%;
+  height:700px;
+  background-color: red;
+}
+
 .bottom_buttons {
   position: sticky;
   bottom: 0;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  column-gap: 30px;
+  justify-content: center;
 }
 
-.bottom_buttons > button {
+button {
   font-size: 120%;
   color: #c6c4cc;
   width: 150px;
