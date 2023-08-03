@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket Assets Test</title>
+  </head>
+  <body>
+
+  <!--    Required for socket.io client (Mandatory for task) to be imported as TS module,
+          You can use the following tag and global "io" variable instead
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>-->
+    <script>
+      window.global ||= window;
+    </script>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
