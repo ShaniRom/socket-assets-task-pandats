@@ -1,18 +1,18 @@
-import './style.css';
-import { Socket } from 'socket.io';
-import * as io from 'socket.io-client';
+import "./style.css";
+import { Socket } from "socket.io";
+import * as io from "socket.io-client";
 
 const socket: Socket = io("wss://panda-fx.pandats-client.io:443", {
-    path: "/socket.io",
-    transports: ["websocket"]
+  path: "/socket.io",
+  transports: ["websocket"],
 });
 
 interface WidgetSymbol {
-    id: number,
-    Digits: number,
-    OutputName: string,
-    Bid: number,
-    Category: string
+  id: number;
+  Digits: number;
+  OutputName: string;
+  Bid: number;
+  Category: string;
 }
 
 // ### Socket Events ###
@@ -22,11 +22,13 @@ connect:
     Called when socket connected
 */
 socket.on("connect", () => {
-    console.log("Socket connected");
+  console.log("Socket connected");
 
-    // Request MT4GetAllSymbols - Get once A list of all available symbols
-    // *reqId used to identify request on server side, can be any unique integer
-    socket.emit('MT4GetAllSymbols', {reqId: parseInt(String(Math.random() * 9999))});
+  // Request MT4GetAllSymbols - Get once A list of all available symbols
+  // *reqId used to identify request on server side, can be any unique integer
+  socket.emit("MT4GetAllSymbols", {
+    reqId: parseInt(String(Math.random() * 9999)),
+  });
 });
 
 /*
@@ -39,26 +41,55 @@ MT4GetAllSymbols:
       4. Bid: the current price
       5. Category: Symbol category; please present only symbols from the "CRYPTO" category.
 */
-socket.on('MT4GetAllSymbols', data => {
 
-    // Example: how to filter data relevant for task
-    let formattedSymbols: WidgetSymbol[] = data.Symbols.map(rawSymbol => {
-        let symbol: WidgetSymbol = {
-            id: rawSymbol.id,
-            Digits: rawSymbol.Digits,
-            OutputName: rawSymbol.OutputName,
-            Bid: rawSymbol.Bid,
-            Category: rawSymbol.Category
-        };
-        return symbol;
-    }).filter(symbol => symbol.Category === "CRYPTO");
-
-    console.log(formattedSymbols);
-
-    // Request symbol data updates
-    socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
+socket.on("MT4GetAllSymbols", (data) => {
+  // Example: how to filter data relevant for task
+  let formattedSymbols: WidgetSymbol[] = data.Symbols.map((rawSymbol) => {
+    let symbol: WidgetSymbol = {
+      id: rawSymbol.id,
+      Digits: rawSymbol.Digits,
+      OutputName: rawSymbol.OutputName,
+      Bid: rawSymbol.Bid,
+      Category: rawSymbol.Category,
+    };
+    return symbol;
+  }).filter((symbol) => symbol.Category === "CRYPTO");
+  console.log(formattedSymbols);
+  
+  
+  
 });
 
+var connectButton = document.getElementById("connectButton");
+  connectButton?.addEventListener("click", function () {
+    console.log("clicked");
+    renderData(formattedSymbols);
+    // Request symbol data updates
+    // socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
+   
+  });
+
+function renderData(formattedSymbols) {
+  let rootPresentedData: any = document.querySelector("#rootPresentedData");
+  let html = "";
+  formattedSymbols.forEach((cryptoData) => {
+    html += `
+       <div class="data"> 
+       <p>${cryptoData.OutputName}<p>
+       <div>
+       `;
+  });
+  console.log("here");
+  rootPresentedData.innerHTML = html;
+}
+//////---- disconnect button
+// function handleDisconnectSocket(){
+//     socket.on('disconnect', () => {
+//         console.log('user disconnected');
+//       });
+
+// }
+// handleDisconnectSocket()
 
 /*
 quotes:
@@ -69,6 +100,6 @@ quotes:
 
       The rest of the array is irrelevant for this task.
 */
-socket.on("quotes", updates => {
-    console.log(updates);
-});
+// socket.on("quotes", updates => {
+//     console.log(updates);
+// });
