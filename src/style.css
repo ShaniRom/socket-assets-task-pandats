@@ -1,6 +1,7 @@
 body {
   margin: 0;
   background-color: rgb(40, 38, 38);
+  width:100%;
 }
 .header_top {
   display: flex;
@@ -17,6 +18,7 @@ body {
   );
   
   align-items: center;
+  border-bottom:black solid 3px;
 }
 .header_top--text {
   color: #c6c4cc;
@@ -25,6 +27,7 @@ body {
 
 input[type="search"] {
   height: 25px;
+  color: #c6c4cc;
   border-radius: 20px;
   background-color: #2a2d2e;
   box-shadow: 0px 0px 0px 2px rgba(255,255,255,0.04);
@@ -32,9 +35,14 @@ input[type="search"] {
 }
 
 .renderedData{
-  width:100%;
+  width:95%;
   height:700px;
-  background-color: red;
+  background-color:  rgb(49, 46, 46);
+  box-shadow: -1px 4px 13px 5px rgba(14,13,13,0.98);
+  margin-bottom:20px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 10px;
 }
 
 .bottom_buttons {
@@ -61,4 +69,10 @@ button {
     #56585a,
     #72746e
   );
+}
+button:hover{
+  color: #efedf4;
+  box-shadow: 0px 3px 24px -9px rgba(226,212,212,0.98);
+  
+
 }
