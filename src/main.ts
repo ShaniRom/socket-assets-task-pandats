@@ -55,37 +55,38 @@ socket.on("MT4GetAllSymbols", (data) => {
     return symbol;
   }).filter((symbol) => symbol.Category === "CRYPTO");
   console.log(formattedSymbols);
-  
+
   var connectButton = document.getElementById("connectButton");
   connectButton?.addEventListener("click", function () {
     console.log("clicked connect");
     renderData(formattedSymbols);
     // Request symbol data updates
     // socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
-   
   });
-  
 });
 
 // ----- the connect when pressed immediatly doesnt show the data fast need to fix that---SHANI
 
 function renderData(formattedSymbols) {
-  let rootPresentedData: any = document.querySelector("#rootPresentedData");
+  let rootPresentedData:any = document.querySelector("#rootPresentedData");
+
   let html = "";
-  formattedSymbols.forEach((cryptoData) => {
+  formattedSymbols.forEach((cryptoData, key: Number) => {
     html += `
-       <div class="data"> 
-       <p>${cryptoData.OutputName}<p>
+       <div > 
+       <p class="data" key=${key} >${cryptoData.OutputName}<p>
        <div>
        `;
+
+    let data:any = document.querySelector(".data");
+    let odd=data.getAttribute("key")
+    console.log(odd)
   });
+
   rootPresentedData.innerHTML = html;
 }
+
 //////---- disconnect button
-
-
-
-
 
 /*
 quotes:
