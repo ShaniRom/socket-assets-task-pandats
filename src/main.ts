@@ -68,7 +68,7 @@ socket.on("MT4GetAllSymbols", (data) => {
 // ----- the connect when pressed immediatly doesnt show the data fast need to fix that---SHANI
 
 function renderData(formattedSymbols) {
-  let rootPresentedData:any = document.querySelector("#rootPresentedData");
+  let rootPresentedData: any = document.querySelector("#rootPresentedData");
 
   let html = "";
   formattedSymbols.forEach((cryptoData, key: Number) => {
@@ -77,10 +77,6 @@ function renderData(formattedSymbols) {
        <p class="data" key=${key} >${cryptoData.OutputName}<p>
        <div>
        `;
-
-    let data:any = document.querySelector(".data");
-    let odd=data.getAttribute("key")
-    console.log(odd)
   });
 
   rootPresentedData.innerHTML = html;
