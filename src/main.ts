@@ -54,45 +54,47 @@ socket.on("MT4GetAllSymbols", (data) => {
     };
     return symbol;
   }).filter((symbol) => symbol.Category === "CRYPTO");
-  console.log(formattedSymbols);
 
-  let connectButton = document.getElementById("connectButton");
-  connectButton?.addEventListener("click", function () {
-    console.log("clicked connect");
-    renderData(formattedSymbols);
+  sortAlphabeticallyFormattedSymbols(formattedSymbols);
 
-
-    // Request symbol data updates
-    // socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
-  });
+  // Request symbol data updates
+  // socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
 });
 
-// ----- the connect when pressed immediatly doesnt show the data fast need to fix that---SHANI
+// sort array by alphabetical order according to OutputName
 
-function renderData(formattedSymbols) {
+function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
+  let sortedAlphabeticallyFormattedSymbols = formattedSymbols.sort(function (
+    a,
+    b
+  ) {
+    if (a.OutputName < b.OutputName) {
+      return -1;
+    }
+    if (a.OutputName > b.OutputName) {
+      return 1;
+    }
+    return 0;
+  });
+  let connectButton = document.getElementById("connectButton");
+  connectButton?.addEventListener("click", function () {
+    console.log("client connected");
+    renderData(sortedAlphabeticallyFormattedSymbols);
+  });
+}
+
+function renderData(alphabeticalSort) {
   try {
     let rootPresentedData: any = document.querySelector("#rootPresentedData");
 
-    let sortedFormattedSymbols= formattedSymbols.sort(function (a, b) {
-      if (a.OutputName < b.OutputName ) {
-        return -1;
-      }
-      if (a.OutputName  > b.OutputName ) {
-        return 1;
-      }
-      return 0;
-    });
-    console.log(sortedFormattedSymbols);
-  
     let html = "";
-    if (Array.isArray(sortedFormattedSymbols)) {
+    if (Array.isArray(alphabeticalSort)) {
       console.log("Array recieved");
 
-      sortedFormattedSymbols.forEach((cryptoData, key: Number) => {
+      alphabeticalSort.forEach((cryptoData, key: Number) => {
 
-        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed(
-          cryptoData.Digits
-        );
+        // display the current price according to digits specified after the decimal
+        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed(cryptoData.Digits );
 
         html += `
        <div class="data"> 
@@ -117,9 +119,7 @@ function renderData(formattedSymbols) {
 
 let disconnectButton = document.getElementById("disconnectButton");
 disconnectButton?.addEventListener("click", function () {
-  console.log("clicked disconnected");
-
-  socket.disconnect();
+   socket.disconnect();
   renderData("");
 });
 socket.on("disconnect", function () {
