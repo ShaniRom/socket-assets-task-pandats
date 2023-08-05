@@ -75,17 +75,20 @@ function renderData(formattedSymbols) {
   if (Array.isArray(formattedSymbols)) {
     console.log("Array recieved");
     formattedSymbols.forEach((cryptoData, key: Number) => {
+       let fixedDigitDisplay =Number(cryptoData.Bid).toFixed(cryptoData.Digits);      
+     
       html += `
-       <div > 
-       <p class="data" key=${key} >${cryptoData.OutputName}<p>
-       <div>
+       <div class="data"> 
+       <h3 key=${key}> ${cryptoData.OutputName}</h3>
+       <h3>${fixedDigitDisplay}</h3>
+       </div>
        `;
     });
 
     rootPresentedData.innerHTML = html;
   } else {
     console.log("Array not recieved");
-    html=`<div> disconnected...</div>`
+    html=`<div> </div>`
     rootPresentedData.innerHTML = html;
   }
   }catch(error){
