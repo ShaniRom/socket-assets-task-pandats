@@ -80,7 +80,7 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
   connectButton?.addEventListener("click", function () {
     console.log("client connected");
     renderData(sortedAlphabeticallyFormattedSymbols);
-
+    sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
     return sortedAlphabeticallyFormattedSymbols;
   });
 }
@@ -105,7 +105,7 @@ function renderData(data) {
 
     let html = "";
     if (Array.isArray(data)) {
-      sortAscDesBids(data);
+      
       console.log("Array recieved");
 
       data.forEach((cryptoData, key: Number) => {
@@ -121,7 +121,7 @@ function renderData(data) {
        </div>
        `;
       });
-       
+
       rootPresentedData.innerHTML = html;
     } else {
       console.log("Array not recieved");
@@ -136,63 +136,42 @@ function renderData(data) {
 //---- Sort current price in ascending order and descending order
 
 function sortAscDesBids(alphabeticalSort) {
-  
-  try{
-    if(Array.isArray(alphabeticalSort)){
+  try {
+    if (Array.isArray(alphabeticalSort)) {
       let symbolTitle: any = document.querySelector(".data_titles--symbol");
-      symbolTitle?.addEventListener("click", function () {  
-        let ascDesArray=[...alphabeticalSort]
-        if(symbolTitle.dataset.clicked == "empty"  || symbolTitle.dataset.clicked == "descending"){
-          symbolTitle.dataset.clicked = "ascending";
-           console.log(symbolTitle.dataset.clicked)
+      symbolTitle?.addEventListener("click", function () {
+        let ascDesArray = [...alphabeticalSort];
+        let clicked=symbolTitle.dataset.clicked
+        
+        switch (clicked) {
+          case "empty":
+          case "ascending":
+            console.log("ascending");
+            symbolTitle.dataset.clicked='descending'
+             
+                     
+            renderData(ascDesArray.sort((a,b) => a.Bid-b.Bid))
+            break;
+          case "descending":
+            console.log("descending")
+            symbolTitle.dataset.clicked='ascending'
 
-
-          
-           
-        }else if(symbolTitle.dataset.clicked = "ascending"){
-          
-          symbolTitle.dataset.clicked = "descending";
-          console.log(symbolTitle.dataset.clicked)
-
-          
-           
+                        
+            renderData(ascDesArray.sort((a,b) => b.Bid-a.Bid))
+            
+            break;
+          default:
+            console.log("couldnt sort array");
         }
       });
-
-    }else{
-      console.log("array not recieved in sortAscDesBids function")
+    } else {
+      console.log("array not recieved in sortAscDesBids function");
     }
-   
-     
-      // if (symbolTitle.dataset.tagname == undefined  || symbolTitle.dataset.tagname == "descending"  ) {
-  
-      //   symbolTitle.dataset.tagname = "ascending";
-      //    let ascendingBidsArray=[...alphabeticalSort];
-  
-      //    ascendingBidsArray.sort((a, b) => parseFloat(a.Bid) - parseFloat(b.Bid));
-      //    renderData(ascendingBidsArray)
-      //   console.log(symbolTitle.dataset.tagname);
-        
-  
-      // } else if (symbolTitle.dataset.tagname == "ascending") {
-      //   symbolTitle.dataset.tagname = "descending";
-      //   let descendingBidsArray=[...alphabeticalSort];
-  
-      //   descendingBidsArray.sort((a, b) => parseFloat(b.Bid) - parseFloat(a.Bid));
-      //   renderData(descendingBidsArray)
-      //   console.log(symbolTitle.dataset.tagname);
-       
-  
-      // }
-      
-     
-   
-      
-  
-  }catch (error) {
+
+
+  } catch (error) {
     console.log(error);
   }
-  
 }
 
 /*
