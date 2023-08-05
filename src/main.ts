@@ -105,7 +105,7 @@ socket.on("disconnect", function () {
 //---- rendering the data from the socket
 function renderData(data) {
   try {
-    // ascendingAndDescendingSort(data);
+   
     let rootPresentedData: any = document.querySelector("#rootPresentedData");
 
     let html = "";
