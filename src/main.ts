@@ -92,10 +92,15 @@ disconnectButton?.addEventListener("click", function () {
   socket.disconnect();
   console.log("client disconnected");
   renderData("");
+  
+    
 });
 socket.on("disconnect", function () {
   console.log("Socket disconnected ");
+  socket.removeAllListeners();
+
 });
+
 
 //---- rendering the data from the socket
 function renderData(data) {
@@ -139,22 +144,26 @@ function sortAscDesBids(alphabeticalSort) {
   try {
     if (Array.isArray(alphabeticalSort)) {
       let symbolTitle: any = document.querySelector(".data_titles--symbol");
+      
+   
       symbolTitle?.addEventListener("click", function () {
         let ascDesArray = [...alphabeticalSort];
-        let clicked=symbolTitle.dataset.clicked
+        let symbolTitleButton=symbolTitle.dataset.sort
+        let clicked = false
         
-        switch (clicked) {
+        
+        switch (symbolTitleButton) {
           case "empty":
           case "ascending":
             console.log("ascending");
-            symbolTitle.dataset.clicked='descending'
+            symbolTitle.dataset.sort='descending'
              
                      
             renderData(ascDesArray.sort((a,b) => a.Bid-b.Bid))
             break;
           case "descending":
             console.log("descending")
-            symbolTitle.dataset.clicked='ascending'
+            symbolTitle.dataset.sort='ascending'
 
                         
             renderData(ascDesArray.sort((a,b) => b.Bid-a.Bid))
