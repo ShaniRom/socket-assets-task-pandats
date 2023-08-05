@@ -147,14 +147,20 @@ function sortAscDesBids(alphabeticalSort) {
            console.log(symbolTitle.dataset.clicked)
 
 
-           ascDesArray.sort((a, b) => parseFloat(a.Bid) - parseFloat(b.Bid));
-           renderData(ascDesArray)
-        }else if(symbolTitle.dataset.clicked == "ascending"){
+          
+           
+        }else if(symbolTitle.dataset.clicked = "ascending"){
+          
           symbolTitle.dataset.clicked = "descending";
           console.log(symbolTitle.dataset.clicked)
+
+          
+           
         }
       });
 
+    }else{
+      console.log("array not recieved in sortAscDesBids function")
     }
    
      
@@ -180,7 +186,7 @@ function sortAscDesBids(alphabeticalSort) {
       // }
       
      
-      // if (symbolTitle.dataset.tagname == undefined  || symbolTitle.dataset.tagname == "descending") 
+   
       
   
   }catch (error) {
