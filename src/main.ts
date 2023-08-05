@@ -64,29 +64,25 @@ socket.on("MT4GetAllSymbols", (data) => {
 //---- sort array by alphabetical order according to OutputName
 
 function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
-  try {
-    const sortedAlphabeticallyFormattedSymbols = formattedSymbols.sort(
-      function (a, b) {
-        if (a.OutputName < b.OutputName) {
-          return -1;
-        }
-        if (a.OutputName > b.OutputName) {
-          return 1;
-        }
-        return 0;
-      }
-    );
-    let connectButton = document.getElementById("connectButton");
-    connectButton?.addEventListener("click", function () {
-      console.log("client connected");
-      renderData(sortedAlphabeticallyFormattedSymbols);
-      sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
-      return sortedAlphabeticallyFormattedSymbols;
-    });
-    
-  } catch (error) {
-    console.log(error);
-  }
+  const sortedAlphabeticallyFormattedSymbols = formattedSymbols.sort(function (
+    a,
+    b
+  ) {
+    if (a.OutputName < b.OutputName) {
+      return -1;
+    }
+    if (a.OutputName > b.OutputName) {
+      return 1;
+    }
+    return 0;
+  });
+  let connectButton = document.getElementById("connectButton");
+  connectButton?.addEventListener("click", function () {
+    console.log("client connected");
+    renderData(sortedAlphabeticallyFormattedSymbols);
+    sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
+    return sortedAlphabeticallyFormattedSymbols;
+  });
 }
 
 //---- disconnect button
@@ -96,12 +92,16 @@ disconnectButton?.addEventListener("click", function () {
   socket.disconnect();
   console.log("client disconnected");
   renderData("");
-  symbolTitle.dataset.sort = "empty";
+  symbolTitle.dataset.sort="empty"
+  
+    
 });
 socket.on("disconnect", function () {
   console.log("Socket disconnected ");
   socket.removeAllListeners();
+
 });
+
 
 //---- rendering the data from the socket
 function renderData(data) {
@@ -111,9 +111,13 @@ function renderData(data) {
 
     let html = "";
     if (Array.isArray(data)) {
+      
+
       data.forEach((cryptoData, key: Number) => {
         //---- display the current price according to digits specified after the decimal
-        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed( cryptoData.Digits );
+        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed(
+          cryptoData.Digits
+        );
 
         html += `
        <div class="data"> 
@@ -125,6 +129,7 @@ function renderData(data) {
 
       rootPresentedData.innerHTML = html;
     } else {
+      
       html = `<div> </div>`;
       rootPresentedData.innerHTML = html;
     }
@@ -137,37 +142,49 @@ function renderData(data) {
 let symbolTitle: any = document.querySelector(".data_titles--symbol");
 function sortAscDesBids(alphabeticalSort) {
   try {
-    if (Array.isArray(alphabeticalSort)) {
+    if (Array.isArray(alphabeticalSort)) {      
+   
       symbolTitle?.addEventListener("click", function () {
         let ascDesArray = [...alphabeticalSort];
-        let symbolTitleButton = symbolTitle.dataset.sort;
+        let symbolTitleButton=symbolTitle.dataset.sort;
         let clicked = false;
-
-        if (!clicked) {
+        
+        if (!clicked){
+          
           switch (symbolTitleButton) {
             case "empty":
             case "ascending":
-              renderData(ascDesArray.sort((a, b) => a.Bid - b.Bid));
-              symbolTitle.dataset.sort = "descending";
+             
+              symbolTitle.dataset.sort='descending'               
+                       
+              renderData(ascDesArray.sort((a,b) => a.Bid-b.Bid))
               break;
             case "descending":
-              renderData(ascDesArray.sort((a, b) => b.Bid - a.Bid));
-              symbolTitle.dataset.sort = "ascending";
-
+              
+              symbolTitle.dataset.sort='ascending'  
+                          
+              renderData(ascDesArray.sort((a,b) => b.Bid-a.Bid))
+              
               break;
             default:
               console.log("couldnt sort array");
           }
-          clicked = true;
-        } else if (clicked = true) {
-          symbolTitle.dataset.sort = "empty";
-          renderData("");
-          clicked = false;
+          clicked=true;
+        }else if(clicked=true){
+          
+          symbolTitle.dataset.sort='empty'
+            renderData("")
+            clicked=false
+            
+            
         }
+        
       });
     } else {
       console.log("array not recieved in sortAscDesBids function");
     }
+
+
   } catch (error) {
     console.log(error);
   }
