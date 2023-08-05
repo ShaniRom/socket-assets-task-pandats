@@ -83,7 +83,6 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
       sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
       return sortedAlphabeticallyFormattedSymbols;
     });
-    
   } catch (error) {
     console.log(error);
   }
@@ -113,7 +112,9 @@ function renderData(data) {
     if (Array.isArray(data)) {
       data.forEach((cryptoData, key: Number) => {
         //---- display the current price according to digits specified after the decimal
-        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed( cryptoData.Digits );
+        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed(
+          cryptoData.Digits
+        );
 
         html += `
        <div class="data"> 
@@ -140,26 +141,27 @@ function sortAscDesBids(alphabeticalSort) {
     if (Array.isArray(alphabeticalSort)) {
       symbolTitle?.addEventListener("click", function () {
         let ascDesArray = [...alphabeticalSort];
-        let symbolTitleButton = symbolTitle.dataset.sort;
         let clicked = false;
 
         if (!clicked) {
-          switch (symbolTitleButton) {
+          switch (symbolTitle.dataset.sort) {
             case "empty":
             case "ascending":
               renderData(ascDesArray.sort((a, b) => a.Bid - b.Bid));
               symbolTitle.dataset.sort = "descending";
+              clicked = true;
               break;
             case "descending":
               renderData(ascDesArray.sort((a, b) => b.Bid - a.Bid));
               symbolTitle.dataset.sort = "ascending";
+              clicked = true;
 
               break;
             default:
               console.log("couldnt sort array");
           }
-          clicked = true;
-        } else if (clicked = true) {
+        
+        } else if (clicked=true) {
           symbolTitle.dataset.sort = "empty";
           renderData("");
           clicked = false;
