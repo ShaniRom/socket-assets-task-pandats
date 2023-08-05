@@ -60,6 +60,8 @@ socket.on("MT4GetAllSymbols", (data) => {
   connectButton?.addEventListener("click", function () {
     console.log("clicked connect");
     renderData(formattedSymbols);
+
+
     // Request symbol data updates
     // socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
   });
@@ -68,33 +70,47 @@ socket.on("MT4GetAllSymbols", (data) => {
 // ----- the connect when pressed immediatly doesnt show the data fast need to fix that---SHANI
 
 function renderData(formattedSymbols) {
-  try{
+  try {
     let rootPresentedData: any = document.querySelector("#rootPresentedData");
 
-  let html = "";
-  if (Array.isArray(formattedSymbols)) {
-    console.log("Array recieved");
-    formattedSymbols.forEach((cryptoData, key: Number) => {
-       let fixedDigitDisplay =Number(cryptoData.Bid).toFixed(cryptoData.Digits);      
-     
-      html += `
+    let sortedFormattedSymbols= formattedSymbols.sort(function (a, b) {
+      if (a.OutputName < b.OutputName ) {
+        return -1;
+      }
+      if (a.OutputName  > b.OutputName ) {
+        return 1;
+      }
+      return 0;
+    });
+    console.log(sortedFormattedSymbols);
+  
+    let html = "";
+    if (Array.isArray(sortedFormattedSymbols)) {
+      console.log("Array recieved");
+
+      sortedFormattedSymbols.forEach((cryptoData, key: Number) => {
+
+        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed(
+          cryptoData.Digits
+        );
+
+        html += `
        <div class="data"> 
        <h3 key=${key}> ${cryptoData.OutputName}</h3>
        <h3>${fixedDigitDisplay}</h3>
        </div>
        `;
-    });
+      });
 
-    rootPresentedData.innerHTML = html;
-  } else {
-    console.log("Array not recieved");
-    html=`<div> </div>`
-    rootPresentedData.innerHTML = html;
+      rootPresentedData.innerHTML = html;
+    } else {
+      console.log("Array not recieved");
+      html = `<div> </div>`;
+      rootPresentedData.innerHTML = html;
+    }
+  } catch (error) {
+    console.log(error);
   }
-  }catch(error){
-    console.log(error)
-  }
-  
 }
 
 //////---- disconnect button
@@ -104,9 +120,9 @@ disconnectButton?.addEventListener("click", function () {
   console.log("clicked disconnected");
 
   socket.disconnect();
-  renderData("")
+  renderData("");
 });
-socket.on("disconnect", function(){
+socket.on("disconnect", function () {
   console.log("client disconnected ");
 });
 
