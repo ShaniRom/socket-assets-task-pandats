@@ -64,7 +64,7 @@ socket.on("MT4GetAllSymbols", (data) => {
 //---- sort array by alphabetical order according to OutputName
 
 function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
-  let sortedAlphabeticallyFormattedSymbols = formattedSymbols.sort(function (
+  const sortedAlphabeticallyFormattedSymbols = formattedSymbols.sort(function (
     a,
     b
   ) {
@@ -80,37 +80,39 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
   connectButton?.addEventListener("click", function () {
     console.log("client connected");
     renderData(sortedAlphabeticallyFormattedSymbols);
+
+    return sortedAlphabeticallyFormattedSymbols;
   });
 }
 
 //---- disconnect button
-socket.on("disconnect", function () {
-  console.log("Socket disconnected ");
 
-}); 
 let disconnectButton = document.getElementById("disconnectButton");
 disconnectButton?.addEventListener("click", function () {
-   socket.disconnect();
-   console.log("client disconnected");
-   renderData("");
-  
- 
+  socket.disconnect();
+  console.log("client disconnected");
+  renderData("");
 });
- 
+socket.on("disconnect", function () {
+  console.log("Socket disconnected ");
+});
+
 //---- rendering the data from the socket
-function renderData(alphabeticalSort) {
+function renderData(data) {
   try {
+    // ascendingAndDescendingSort(data);
     let rootPresentedData: any = document.querySelector("#rootPresentedData");
 
     let html = "";
-    if (Array.isArray(alphabeticalSort)) {
+    if (Array.isArray(data)) {
+      sortAscDesBids(data);
       console.log("Array recieved");
-      
 
-      alphabeticalSort.forEach((cryptoData, key: Number) => {
-
+      data.forEach((cryptoData, key: Number) => {
         //---- display the current price according to digits specified after the decimal
-        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed(cryptoData.Digits );
+        let fixedDigitDisplay = Number(cryptoData.Bid).toFixed(
+          cryptoData.Digits
+        );
 
         html += `
        <div class="data"> 
@@ -119,7 +121,7 @@ function renderData(alphabeticalSort) {
        </div>
        `;
       });
-
+       
       rootPresentedData.innerHTML = html;
     } else {
       console.log("Array not recieved");
@@ -133,9 +135,59 @@ function renderData(alphabeticalSort) {
 
 //---- Sort current price in ascending order and descending order
 
+function sortAscDesBids(alphabeticalSort) {
+  
+  try{
+    if(Array.isArray(alphabeticalSort)){
+      let symbolTitle: any = document.querySelector(".data_titles--symbol");
+      symbolTitle?.addEventListener("click", function () {  
+        let ascDesArray=[...alphabeticalSort]
+        if(symbolTitle.dataset.clicked == "empty"  || symbolTitle.dataset.clicked == "descending"){
+          symbolTitle.dataset.clicked = "ascending";
+           console.log(symbolTitle.dataset.clicked)
 
 
+           ascDesArray.sort((a, b) => parseFloat(a.Bid) - parseFloat(b.Bid));
+           renderData(ascDesArray)
+        }else if(symbolTitle.dataset.clicked == "ascending"){
+          symbolTitle.dataset.clicked = "descending";
+          console.log(symbolTitle.dataset.clicked)
+        }
+      });
 
+    }
+   
+     
+      // if (symbolTitle.dataset.tagname == undefined  || symbolTitle.dataset.tagname == "descending"  ) {
+  
+      //   symbolTitle.dataset.tagname = "ascending";
+      //    let ascendingBidsArray=[...alphabeticalSort];
+  
+      //    ascendingBidsArray.sort((a, b) => parseFloat(a.Bid) - parseFloat(b.Bid));
+      //    renderData(ascendingBidsArray)
+      //   console.log(symbolTitle.dataset.tagname);
+        
+  
+      // } else if (symbolTitle.dataset.tagname == "ascending") {
+      //   symbolTitle.dataset.tagname = "descending";
+      //   let descendingBidsArray=[...alphabeticalSort];
+  
+      //   descendingBidsArray.sort((a, b) => parseFloat(b.Bid) - parseFloat(a.Bid));
+      //   renderData(descendingBidsArray)
+      //   console.log(symbolTitle.dataset.tagname);
+       
+  
+      // }
+      
+     
+      // if (symbolTitle.dataset.tagname == undefined  || symbolTitle.dataset.tagname == "descending") 
+      
+  
+  }catch (error) {
+    console.log(error);
+  }
+  
+}
 
 /*
 quotes:
