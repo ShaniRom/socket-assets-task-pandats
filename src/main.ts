@@ -56,7 +56,7 @@ socket.on("MT4GetAllSymbols", (data) => {
   }).filter((symbol) => symbol.Category === "CRYPTO");
   console.log(formattedSymbols);
 
-  var connectButton = document.getElementById("connectButton");
+  let connectButton = document.getElementById("connectButton");
   connectButton?.addEventListener("click", function () {
     console.log("clicked connect");
     renderData(formattedSymbols);
@@ -68,21 +68,41 @@ socket.on("MT4GetAllSymbols", (data) => {
 // ----- the connect when pressed immediatly doesnt show the data fast need to fix that---SHANI
 
 function renderData(formattedSymbols) {
-  let rootPresentedData: any = document.querySelector("#rootPresentedData");
+  try{
+    let rootPresentedData: any = document.querySelector("#rootPresentedData");
 
   let html = "";
-  formattedSymbols.forEach((cryptoData, key: Number) => {
-    html += `
+  if (Array.isArray(formattedSymbols)) {
+    console.log("Array recieved");
+    formattedSymbols.forEach((cryptoData, key: Number) => {
+      html += `
        <div > 
        <p class="data" key=${key} >${cryptoData.OutputName}<p>
        <div>
        `;
-  });
+    });
 
-  rootPresentedData.innerHTML = html;
+    rootPresentedData.innerHTML = html;
+  } else {
+    console.log("Array not recieved");
+    html=`<div> disconnected...</div>`
+    rootPresentedData.innerHTML = html;
+  }
+  }catch(error){
+    console.log(error)
+  }
+  
 }
 
 //////---- disconnect button
+
+let disconnectButton = document.getElementById("disconnectButton");
+disconnectButton?.addEventListener("click", function () {
+  console.log("clicked disconnected");
+
+  socket.disconnect();
+  renderData("")
+});
 
 /*
 quotes:
