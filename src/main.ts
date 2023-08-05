@@ -61,7 +61,7 @@ socket.on("MT4GetAllSymbols", (data) => {
   // socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
 });
 
-// sort array by alphabetical order according to OutputName
+//---- sort array by alphabetical order according to OutputName
 
 function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
   let sortedAlphabeticallyFormattedSymbols = formattedSymbols.sort(function (
@@ -109,7 +109,7 @@ function renderData(alphabeticalSort) {
 
       alphabeticalSort.forEach((cryptoData, key: Number) => {
 
-        // display the current price according to digits specified after the decimal
+        //---- display the current price according to digits specified after the decimal
         let fixedDigitDisplay = Number(cryptoData.Bid).toFixed(cryptoData.Digits );
 
         html += `
@@ -131,7 +131,7 @@ function renderData(alphabeticalSort) {
   }
 }
 
-// Sort current price in ascending order and descending order
+//---- Sort current price in ascending order and descending order
 
 
 
