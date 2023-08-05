@@ -103,6 +103,9 @@ disconnectButton?.addEventListener("click", function () {
   socket.disconnect();
   renderData("")
 });
+socket.on("disconnect", function(){
+  console.log("client disconnected ");
+});
 
 /*
 quotes:
