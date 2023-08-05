@@ -83,6 +83,21 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
   });
 }
 
+//---- disconnect button
+socket.on("disconnect", function () {
+  console.log("Socket disconnected ");
+
+}); 
+let disconnectButton = document.getElementById("disconnectButton");
+disconnectButton?.addEventListener("click", function () {
+   socket.disconnect();
+   console.log("client disconnected");
+   renderData("");
+  
+ 
+});
+ 
+//---- rendering the data from the socket
 function renderData(alphabeticalSort) {
   try {
     let rootPresentedData: any = document.querySelector("#rootPresentedData");
@@ -90,6 +105,7 @@ function renderData(alphabeticalSort) {
     let html = "";
     if (Array.isArray(alphabeticalSort)) {
       console.log("Array recieved");
+      
 
       alphabeticalSort.forEach((cryptoData, key: Number) => {
 
@@ -115,16 +131,11 @@ function renderData(alphabeticalSort) {
   }
 }
 
-//////---- disconnect button
+// Sort current price in ascending order and descending order
 
-let disconnectButton = document.getElementById("disconnectButton");
-disconnectButton?.addEventListener("click", function () {
-   socket.disconnect();
-  renderData("");
-});
-socket.on("disconnect", function () {
-  console.log("client disconnected ");
-});
+
+
+
 
 /*
 quotes:
