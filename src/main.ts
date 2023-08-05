@@ -92,6 +92,7 @@ disconnectButton?.addEventListener("click", function () {
   socket.disconnect();
   console.log("client disconnected");
   renderData("");
+  symbolTitle.dataset.sort="empty"
   
     
 });
@@ -111,7 +112,6 @@ function renderData(data) {
     let html = "";
     if (Array.isArray(data)) {
       
-      console.log("Array recieved");
 
       data.forEach((cryptoData, key: Number) => {
         //---- display the current price according to digits specified after the decimal
@@ -129,7 +129,7 @@ function renderData(data) {
 
       rootPresentedData.innerHTML = html;
     } else {
-      console.log("Array not recieved");
+      
       html = `<div> </div>`;
       rootPresentedData.innerHTML = html;
     }
@@ -139,39 +139,46 @@ function renderData(data) {
 }
 
 //---- Sort current price in ascending order and descending order
-
+let symbolTitle: any = document.querySelector(".data_titles--symbol");
 function sortAscDesBids(alphabeticalSort) {
   try {
-    if (Array.isArray(alphabeticalSort)) {
-      let symbolTitle: any = document.querySelector(".data_titles--symbol");
-      
+    if (Array.isArray(alphabeticalSort)) {      
    
       symbolTitle?.addEventListener("click", function () {
         let ascDesArray = [...alphabeticalSort];
-        let symbolTitleButton=symbolTitle.dataset.sort
-        let clicked = false
+        let symbolTitleButton=symbolTitle.dataset.sort;
+        let clicked = false;
         
-        
-        switch (symbolTitleButton) {
-          case "empty":
-          case "ascending":
-            console.log("ascending");
-            symbolTitle.dataset.sort='descending'
+        if (!clicked){
+          
+          switch (symbolTitleButton) {
+            case "empty":
+            case "ascending":
              
-                     
-            renderData(ascDesArray.sort((a,b) => a.Bid-b.Bid))
-            break;
-          case "descending":
-            console.log("descending")
-            symbolTitle.dataset.sort='ascending'
-
-                        
-            renderData(ascDesArray.sort((a,b) => b.Bid-a.Bid))
+              symbolTitle.dataset.sort='descending'               
+                       
+              renderData(ascDesArray.sort((a,b) => a.Bid-b.Bid))
+              break;
+            case "descending":
+              
+              symbolTitle.dataset.sort='ascending'  
+                          
+              renderData(ascDesArray.sort((a,b) => b.Bid-a.Bid))
+              
+              break;
+            default:
+              console.log("couldnt sort array");
+          }
+          clicked=true;
+        }else if(clicked=true){
+          
+          symbolTitle.dataset.sort='empty'
+            renderData("")
+            clicked=false
             
-            break;
-          default:
-            console.log("couldnt sort array");
+            
         }
+        
       });
     } else {
       console.log("array not recieved in sortAscDesBids function");
