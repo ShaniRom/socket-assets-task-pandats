@@ -188,7 +188,6 @@ quotes:
       The rest of the array is irrelevant for this task.
 */
 socket.on("quotes", (updates) => {
-  // console.log(updates);
   dynamicallyReceiveQuotes(updates);
 });
 
@@ -208,14 +207,12 @@ function dynamicallyReceiveQuotes(updates: any) {
     return newQuotes;
   });
 
-  // console.log(newQuotes)
+  
 }
 
 // ---- Updating current rendered data with the updating quotes
 function updatingNewQuotes(newQuotes, currentData) {
-  // newQuotes.forEach((quote, key: Number) => {
-  //   console.log(quote.id);
-  // });
+
   for (let i = 0; i < currentData.length; i++) {
     let currentId = currentData[i].id;
     let currentBid = currentData[i].Bid;
@@ -234,16 +231,7 @@ function updatingNewQuotes(newQuotes, currentData) {
 }
 
 
-// const index = items.findIndex((item) => item.name === itemName);
-//     console.log(index);
 
-
-
-//     if (index >= 0) {
-//       this.items[index].name = itemName;
-//       this.items[index].price = newPrice;
-
-//     }
 
 // ---- search
 let searchBar:any=document.querySelector(".header_top--searchBar");
