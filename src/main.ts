@@ -56,6 +56,7 @@ socket.on("MT4GetAllSymbols", (data) => {
   }).filter((symbol) => symbol.Category === "CRYPTO");
 
   sortAlphabeticallyFormattedSymbols(formattedSymbols);
+  // console.log(formattedSymbols)
 
   // Request symbol data updates
   // socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
@@ -149,13 +150,13 @@ function sortAscDesBids(alphabeticalSort) {
             case "notPriceSorted":
             case "ascending":
               renderData(ascDesArray.sort((a, b) => a.Bid - b.Bid));
-              console.log("ascending")
+              console.log("ascending");
               symbolTitle.dataset.sort = "descending";
 
               break;
             case "descending":
               renderData(ascDesArray.sort((a, b) => b.Bid - a.Bid));
-              console.log("descending")
+              console.log("descending");
               symbolTitle.dataset.sort = "ascending";
 
               break;
@@ -164,7 +165,7 @@ function sortAscDesBids(alphabeticalSort) {
               symbolTitle.dataset.sort = "empty";
               console.log("couldnt sort array");
           }
-        } 
+        }
       });
     } else {
       console.log("array not recieved in sortAscDesBids function");
@@ -184,5 +185,29 @@ quotes:
       The rest of the array is irrelevant for this task.
 */
 // socket.on("quotes", updates => {
-//     console.log(updates);
+//     // console.log(updates);
+//     dynamicallyReceiveQuotes(updates)
 // });
+
+// ---- Going through the arrays and taking what is in the 0 and 1 index
+
+function dynamicallyReceiveQuotes(newQuotes: any) {
+  let quotes:Array<object> = [];
+  
+  
+  newQuotes.forEach((element) => {
+    // console.log(element);
+ 
+    for(var j = 0; j < element.length; j++){
+    let obj={};
+      // console.log(' id ' + element[0] + ' bid ' + element [1]);
+     obj={id:element[0] , Bid: element[1]}
+      quotes.push(obj)
+      console.log(quotes)
+  }
+
+
+
+
+  });
+}
