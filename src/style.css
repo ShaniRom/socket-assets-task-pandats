@@ -26,9 +26,11 @@ body {
 }
 .header_top--magnifyingGlassIcon{
   position: absolute; 
+  
 }
 
-input[type="search"] {
+.header_top--searchBar {
+  
   height: 25px;
   color: #c6c4cc;
   border-radius: 20px;
