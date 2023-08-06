@@ -85,6 +85,7 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
       symbolTitle.dataset.sort = "notPriceSorted";
       renderData(sortedAlphabeticallyFormattedSymbols);
       sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
+
       return sortedAlphabeticallyFormattedSymbols;
     });
   } catch (error) {
@@ -109,10 +110,9 @@ socket.on("disconnect", function () {
 
 //---- rendering the data from the socket
 function renderData(data) {
-  updatingNewQuotes(newQuotes, data);
   try {
     let rootPresentedData: any = document.querySelector("#rootPresentedData");
-
+    updatingNewQuotes(newQuotes, data);
     let html = "";
     if (Array.isArray(data)) {
       data.forEach((cryptoData, key: Number) => {
@@ -122,8 +122,8 @@ function renderData(data) {
         );
 
         html += `
-       <div class="data"> 
-       <h3 key=${key}> ${cryptoData.OutputName}</h3>
+       <div class="data" key=${key}> 
+       <h3 > ${cryptoData.OutputName}</h3>
        <h3>${fixedDigitDisplay}</h3>
        </div>
        `;
@@ -187,10 +187,10 @@ quotes:
 
       The rest of the array is irrelevant for this task.
 */
-// socket.on("quotes", updates => {
-//     // console.log(updates);
-//     dynamicallyReceiveQuotes(updates)
-// });
+socket.on("quotes", (updates) => {
+  // console.log(updates);
+  dynamicallyReceiveQuotes(updates);
+});
 
 // ---- Going through the arrays and taking what is in the 0 and 1 index
 interface NewQuotes {
@@ -200,31 +200,51 @@ interface NewQuotes {
 
 let newQuotes: Array<NewQuotes> = [];
 function dynamicallyReceiveQuotes(updates: any) {
-  if (Array.isArray(updates)) {
-    updates.map((quote) => {
-      let obj = { id: quote[0], Bid: quote[1] };
+  updates.forEach((quote) => {
+    let obj = { id: quote[0], Bid: quote[1] };
 
-      newQuotes.push(obj);
-    });
+    newQuotes.push(obj);
 
-   
     return newQuotes;
-  } else {
-    console.log("dynamicallyReceiveQuotes function didn't recieve an array ");
-  }
-}
+  });
 
+  // console.log(newQuotes)
+}
 
 // ---- Updating current rendered data with the updating quotes
 function updatingNewQuotes(newQuotes, currentData) {
-
+  // newQuotes.forEach((quote, key: Number) => {
+  //   console.log(quote.id);
+  // });
   for (let i = 0; i < currentData.length; i++) {
-        let currentId=currentData[i].id
-        let currentBid=currentData[i].Bid
-        // console.log(currentId, currentBid)
-      //  need to access newQuotes in the array into the object and then the 0 is the id and compare to currentId and then switch the bid "update it" then display it
+    let currentId = currentData[i].id;
+    let currentBid = currentData[i].Bid;
+    for (let i = 0; i < newQuotes.length; i++) {
+      
+      let newQuoteId=newQuotes[i].id
+      let newQuoteBid=newQuotes[i].Bid
+
+      if (currentId==newQuoteId){
+        console.log('we are the same id')
        
+      }
+    
+    }
   }
-  // console.log(currentData)
-  // console.log(newQuotes);
 }
+
+
+// const index = this.items.findIndex((item) => item.name === itemName);
+//     console.log(index);
+
+
+
+//     if (index >= 0) {
+//       this.items[index].name = itemName;
+//       this.items[index].price = newPrice;
+
+//       this.storeData();
+//       this.getData();
+//     }
+
+// ---- search
