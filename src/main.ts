@@ -207,7 +207,7 @@ function dynamicallyReceiveQuotes(updates: any) {
       newQuotes.push(obj);
     });
 
-    console.log(newQuotes);
+   
     return newQuotes;
   } else {
     console.log("dynamicallyReceiveQuotes function didn't recieve an array ");
@@ -221,7 +221,9 @@ function updatingNewQuotes(newQuotes, currentData) {
   for (let i = 0; i < currentData.length; i++) {
         let currentId=currentData[i].id
         let currentBid=currentData[i].Bid
-        console.log(currentId, currentBid)
+        // console.log(currentId, currentBid)
+       
+       
   }
   // console.log(currentData)
   // console.log(newQuotes);
