@@ -54,12 +54,11 @@ socket.on("MT4GetAllSymbols", (data) => {
     };
     return symbol;
   }).filter((symbol) => symbol.Category === "CRYPTO");
-
   sortAlphabeticallyFormattedSymbols(formattedSymbols);
   // console.log(formattedSymbols)
 
   // Request symbol data updates
-  // socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
+  socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
 });
 
 //---- sort array by alphabetical order according to OutputName
@@ -80,9 +79,9 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
     let connectButton = document.getElementById("connectButton");
     connectButton?.addEventListener("click", function () {
       console.log("client connected");
-      renderData(sortedAlphabeticallyFormattedSymbols);
-      sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
       symbolTitle.dataset.sort = "notPriceSorted";
+      renderData(sortedAlphabeticallyFormattedSymbols);
+      sortAscDesBids(sortedAlphabeticallyFormattedSymbols);     
       return sortedAlphabeticallyFormattedSymbols;
     });
   } catch (error) {
@@ -190,26 +189,24 @@ quotes:
 // });
 
 // ---- Going through the arrays and taking what is in the 0 and 1 index
-
+interface NewQuotes{
+  id:Number;
+  Bid:Number;
+}
 function dynamicallyReceiveQuotes(updates: any) {
-  let quotes:Array<object> = [];
   
+ let newQuotes:Array<NewQuotes>= [];
+  updates.map((quote) => {
+      
   
-  updates.forEach((element) => {
-    // console.log(element);
- 
-    for(var j = 0; j < element.length; j++){
-    let obj={};
-      // console.log(' id ' + element[0] + ' bid ' + element [1]);
-     obj={id:element[0] , Bid: element[1]}
-      quotes.push(obj)
-      console.log(quotes)
-      return quotes
-  }
-  console.log(updates)
-  console.log(quotes)
-  
-
-
+      //  console.log(' id ' + quote[0] + ' bid ' + quote [1]);
+     let obj={"id":quote[0] , "Bid": quote[1]}
+     
+    newQuotes.push(obj)
+   
   });
+
+ console.log(newQuotes)
+ 
+    
 }
