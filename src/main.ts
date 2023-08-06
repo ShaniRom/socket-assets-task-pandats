@@ -94,7 +94,7 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
 let disconnectButton = document.getElementById("disconnectButton");
 disconnectButton?.addEventListener("click", function () {
   socket.disconnect();
-  clicked = false; 
+  clicked = false;
   renderData("");
   symbolTitle.dataset.sort = "empty";
   console.log("client disconnected");
@@ -107,7 +107,6 @@ socket.on("disconnect", function () {
 //---- rendering the data from the socket
 function renderData(data) {
   try {
-   
     let rootPresentedData: any = document.querySelector("#rootPresentedData");
 
     let html = "";
@@ -143,31 +142,29 @@ function sortAscDesBids(alphabeticalSort) {
   try {
     if (Array.isArray(alphabeticalSort)) {
       symbolTitle?.addEventListener("click", function () {
-        let ascDesArray = [...alphabeticalSort];        
-             clicked=true
+        let ascDesArray = [...alphabeticalSort];
+        clicked = true;
         if (clicked) {
           switch (symbolTitle.dataset.sort) {
             case "notPriceSorted":
             case "ascending":
               renderData(ascDesArray.sort((a, b) => a.Bid - b.Bid));
+              console.log("ascending")
               symbolTitle.dataset.sort = "descending";
-              
+
               break;
             case "descending":
               renderData(ascDesArray.sort((a, b) => b.Bid - a.Bid));
+              console.log("descending")
               symbolTitle.dataset.sort = "ascending";
-             
 
               break;
             default:
+              clicked = false;
+              symbolTitle.dataset.sort = "empty";
               console.log("couldnt sort array");
           }
-        
-        } else if (clicked=false) {
-          symbolTitle.dataset.sort = "empty";
-          renderData("");
-          clicked = false;
-        }
+        } 
       });
     } else {
       console.log("array not recieved in sortAscDesBids function");
