@@ -81,6 +81,7 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
       console.log("client connected");
       renderData(sortedAlphabeticallyFormattedSymbols);
       sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
+      symbolTitle.dataset.sort = "notPriceSorted";
       return sortedAlphabeticallyFormattedSymbols;
     });
   } catch (error) {
@@ -93,9 +94,10 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
 let disconnectButton = document.getElementById("disconnectButton");
 disconnectButton?.addEventListener("click", function () {
   socket.disconnect();
-  console.log("client disconnected");
+  clicked = false; 
   renderData("");
   symbolTitle.dataset.sort = "empty";
+  console.log("client disconnected");
 });
 socket.on("disconnect", function () {
   console.log("Socket disconnected ");
@@ -136,32 +138,32 @@ function renderData(data) {
 
 //---- Sort current price in ascending order and descending order
 let symbolTitle: any = document.querySelector(".data_titles--symbol");
+let clicked = false;
 function sortAscDesBids(alphabeticalSort) {
   try {
     if (Array.isArray(alphabeticalSort)) {
       symbolTitle?.addEventListener("click", function () {
-        let ascDesArray = [...alphabeticalSort];
-        let clicked = false;
-
-        if (!clicked) {
+        let ascDesArray = [...alphabeticalSort];        
+             clicked=true
+        if (clicked) {
           switch (symbolTitle.dataset.sort) {
-            case "empty":
+            case "notPriceSorted":
             case "ascending":
               renderData(ascDesArray.sort((a, b) => a.Bid - b.Bid));
               symbolTitle.dataset.sort = "descending";
-              clicked = true;
+              
               break;
             case "descending":
               renderData(ascDesArray.sort((a, b) => b.Bid - a.Bid));
               symbolTitle.dataset.sort = "ascending";
-              clicked = true;
+             
 
               break;
             default:
               console.log("couldnt sort array");
           }
         
-        } else if (clicked=true) {
+        } else if (clicked=false) {
           symbolTitle.dataset.sort = "empty";
           renderData("");
           clicked = false;
