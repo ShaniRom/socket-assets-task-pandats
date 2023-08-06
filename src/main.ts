@@ -58,7 +58,10 @@ socket.on("MT4GetAllSymbols", (data) => {
   // console.log(formattedSymbols)
 
   // Request symbol data updates
-  socket.emit('quotesSubscribe', {real: 0, reqId: parseInt(String(Math.random() * 9999))});
+  socket.emit("quotesSubscribe", {
+    real: 0,
+    reqId: parseInt(String(Math.random() * 9999)),
+  });
 });
 
 //---- sort array by alphabetical order according to OutputName
@@ -81,7 +84,7 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
       console.log("client connected");
       symbolTitle.dataset.sort = "notPriceSorted";
       renderData(sortedAlphabeticallyFormattedSymbols);
-      sortAscDesBids(sortedAlphabeticallyFormattedSymbols);     
+      sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
       return sortedAlphabeticallyFormattedSymbols;
     });
   } catch (error) {
@@ -106,6 +109,7 @@ socket.on("disconnect", function () {
 
 //---- rendering the data from the socket
 function renderData(data) {
+  updatingNewQuotes(newQuotes, data);
   try {
     let rootPresentedData: any = document.querySelector("#rootPresentedData");
 
@@ -189,24 +193,36 @@ quotes:
 // });
 
 // ---- Going through the arrays and taking what is in the 0 and 1 index
-interface NewQuotes{
-  id:Number;
-  Bid:Number;
+interface NewQuotes {
+  id: Number;
+  Bid: Number;
 }
-function dynamicallyReceiveQuotes(updates: any) {
-  
- let newQuotes:Array<NewQuotes>= [];
-  updates.map((quote) => {
-      
-  
-      //  console.log(' id ' + quote[0] + ' bid ' + quote [1]);
-     let obj={"id":quote[0] , "Bid": quote[1]}
-     
-    newQuotes.push(obj)
-   
-  });
 
- console.log(newQuotes)
- 
-    
+let newQuotes: Array<NewQuotes> = [];
+function dynamicallyReceiveQuotes(updates: any) {
+  if (Array.isArray(updates)) {
+    updates.map((quote) => {
+      let obj = { id: quote[0], Bid: quote[1] };
+
+      newQuotes.push(obj);
+    });
+
+    console.log(newQuotes);
+    return newQuotes;
+  } else {
+    console.log("dynamicallyReceiveQuotes function didn't recieve an array ");
+  }
+}
+
+
+// ---- Updating current rendered data with the updating quotes
+function updatingNewQuotes(newQuotes, currentData) {
+
+  for (let i = 0; i < currentData.length; i++) {
+        let currentId=currentData[i].id
+        let currentBid=currentData[i].Bid
+        console.log(currentId, currentBid)
+  }
+  // console.log(currentData)
+  // console.log(newQuotes);
 }
