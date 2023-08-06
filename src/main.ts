@@ -234,7 +234,7 @@ function updatingNewQuotes(newQuotes, currentData) {
 }
 
 
-// const index = this.items.findIndex((item) => item.name === itemName);
+// const index = items.findIndex((item) => item.name === itemName);
 //     console.log(index);
 
 
@@ -243,8 +243,6 @@ function updatingNewQuotes(newQuotes, currentData) {
 //       this.items[index].name = itemName;
 //       this.items[index].price = newPrice;
 
-//       this.storeData();
-//       this.getData();
 //     }
 
 // ---- search
