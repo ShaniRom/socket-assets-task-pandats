@@ -7,29 +7,6 @@ const socket: Socket = io("wss://panda-fx.pandats-client.io:443", {
   transports: ["websocket"],
 });
 
-interface WidgetSymbol {
-  id: number;
-  Digits: number;
-  OutputName: string;
-  Bid: number;
-  Category: string;
-}
-
-// ### Socket Events ###
-
-/*
-connect:
-    Called when socket connected
-*/
-socket.on("connect", () => {
-  console.log("Socket connected");
-
-  // Request MT4GetAllSymbols - Get once A list of all available symbols
-  // *reqId used to identify request on server side, can be any unique integer
-  socket.emit("MT4GetAllSymbols", {
-    reqId: parseInt(String(Math.random() * 9999)),
-  });
-});
 
 /*
 MT4GetAllSymbols:
@@ -41,6 +18,24 @@ MT4GetAllSymbols:
       4. Bid: the current price
       5. Category: Symbol category; please present only symbols from the "CRYPTO" category.
 */
+
+interface WidgetSymbol {
+  id: number;
+  Digits: number;
+  OutputName: string;
+  Bid: number;
+  Category: string;
+}
+
+
+socket.on("connect", () => {
+  console.log("Socket connected");
+  socket.emit("MT4GetAllSymbols", {
+    reqId: parseInt(String(Math.random() * 9999)),
+  });
+});
+
+
 
 socket.on("MT4GetAllSymbols", (data) => {
   // Example: how to filter data relevant for task
@@ -55,7 +50,6 @@ socket.on("MT4GetAllSymbols", (data) => {
     return symbol;
   }).filter((symbol) => symbol.Category === "CRYPTO");
   sortAlphabeticallyFormattedSymbols(formattedSymbols);
-  // console.log(formattedSymbols)
 
   // Request symbol data updates
   socket.emit("quotesSubscribe", {
@@ -80,8 +74,9 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
       }
     );
     let connectButton = document.getElementById("connectButton");
+    
     connectButton?.addEventListener("click", function () {
-      console.log("client connected");
+      socket.emit("connect"); 
       symbolTitle.dataset.sort = "notPriceSorted";
       renderData(sortedAlphabeticallyFormattedSymbols);
       sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
@@ -97,22 +92,14 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
 
 let disconnectButton = document.getElementById("disconnectButton");
 disconnectButton?.addEventListener("click", function () {
-
-  
-
-  socket.emit("disconnect", {  });
+  socket.emit("disconnect");
 
   socket.on("disconnect", function () {
     console.log("Socket disconnected ");
-      clicked = false;
-  renderData("");
-  symbolTitle.dataset.sort = "empty";
-  console.log("client disconnected");
-    
+    clicked = false;
+    renderData("");
+    symbolTitle.dataset.sort = "empty";
   });
-  
-
-  
 });
 
 //---- rendering the data from the socket
@@ -153,6 +140,7 @@ function sortAscDesBids(alphabeticalSort) {
   try {
     if (Array.isArray(alphabeticalSort)) {
       symbolTitle?.addEventListener("click", function () {
+        
         let ascDesArray = [...alphabeticalSort];
         clicked = true;
         if (clicked) {
