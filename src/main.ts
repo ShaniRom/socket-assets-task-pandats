@@ -191,11 +191,11 @@ quotes:
 
 // ---- Going through the arrays and taking what is in the 0 and 1 index
 
-function dynamicallyReceiveQuotes(newQuotes: any) {
+function dynamicallyReceiveQuotes(updates: any) {
   let quotes:Array<object> = [];
   
   
-  newQuotes.forEach((element) => {
+  updates.forEach((element) => {
     // console.log(element);
  
     for(var j = 0; j < element.length; j++){
@@ -204,9 +204,11 @@ function dynamicallyReceiveQuotes(newQuotes: any) {
      obj={id:element[0] , Bid: element[1]}
       quotes.push(obj)
       console.log(quotes)
+      return quotes
   }
-
-
+  console.log(updates)
+  console.log(quotes)
+  
 
 
   });
