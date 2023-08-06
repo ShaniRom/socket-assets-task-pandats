@@ -148,13 +148,11 @@ function sortAscDesBids(alphabeticalSort) {
             case "notPriceSorted":
             case "ascending":
               renderData(ascDesArray.sort((a, b) => a.Bid - b.Bid));
-              console.log("ascending");
               symbolTitle.dataset.sort = "descending";
 
               break;
             case "descending":
               renderData(ascDesArray.sort((a, b) => b.Bid - a.Bid));
-              console.log("descending");
               symbolTitle.dataset.sort = "ascending";
 
               break;
