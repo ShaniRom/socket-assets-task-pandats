@@ -222,7 +222,7 @@ function updatingNewQuotes(newQuotes, currentData) {
         let currentId=currentData[i].id
         let currentBid=currentData[i].Bid
         // console.log(currentId, currentBid)
-       
+      //  need to access newQuotes in the array into the object and then the 0 is the id and compare to currentId and then switch the bid "update it" then display it
        
   }
   // console.log(currentData)
