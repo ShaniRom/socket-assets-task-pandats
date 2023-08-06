@@ -97,15 +97,22 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
 
 let disconnectButton = document.getElementById("disconnectButton");
 disconnectButton?.addEventListener("click", function () {
-  socket.disconnect();
-  clicked = false;
+
+  
+
+  socket.emit("disconnect", {  });
+
+  socket.on("disconnect", function () {
+    console.log("Socket disconnected ");
+      clicked = false;
   renderData("");
   symbolTitle.dataset.sort = "empty";
   console.log("client disconnected");
-});
-socket.on("disconnect", function () {
-  console.log("Socket disconnected ");
-  socket.removeAllListeners();
+    
+  });
+  
+
+  
 });
 
 //---- rendering the data from the socket
@@ -206,37 +213,20 @@ function dynamicallyReceiveQuotes(updates: any) {
 
     return newQuotes;
   });
-
-  
 }
 
 // ---- Updating current rendered data with the updating quotes
 function updatingNewQuotes(newQuotes, currentData) {
-
   for (let i = 0; i < currentData.length; i++) {
     let currentId = currentData[i].id;
     let currentBid = currentData[i].Bid;
     for (let i = 0; i < newQuotes.length; i++) {
-      
-      let newQuoteId=newQuotes[i].id
-      let newQuoteBid=newQuotes[i].Bid
+      let newQuoteId = newQuotes[i].id;
+      let newQuoteBid = newQuotes[i].Bid;
 
-      if (currentId==newQuoteId){
-        console.log('we are the same id')
-       
+      if (currentId == newQuoteId) {
+        // console.log('we are the same id')
       }
-    
     }
   }
 }
-
-
-
-
-// ---- search
-let searchBar:any=document.querySelector(".header_top--searchBar");
-searchBar?.addEventListener("click", function () {
-  console.log(searchBar.innerHTML)
-});
-
-
