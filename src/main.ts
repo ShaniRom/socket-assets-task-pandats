@@ -246,3 +246,9 @@ function updatingNewQuotes(newQuotes, currentData) {
 //     }
 
 // ---- search
+let searchBar:any=document.querySelector(".header_top--searchBar");
+searchBar?.addEventListener("click", function () {
+  console.log(searchBar.innerHTML)
+});
+
+
