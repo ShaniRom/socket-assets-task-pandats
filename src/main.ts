@@ -207,7 +207,7 @@ function dynamicallyReceiveQuotes(updates: any) {
   });
 }
 
-// ---- Updating current rendered data with the updating quotes
+// ---- Comparing current rendered data with the updating quotes
 function updatingNewQuotes(newQuotes, currentData) {
   for (let i = 0; i < currentData.length; i++) {
     let currentId = currentData[i].id;
