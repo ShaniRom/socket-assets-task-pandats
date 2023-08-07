@@ -62,10 +62,10 @@ socket.on("MT4GetAllSymbols", (data) => {
   sortAlphabeticallyFormattedSymbols(formattedSymbols);
 
   // Request symbol data updates
-  socket.emit("quotesSubscribe", {
-    real: 0,
-    reqId: parseInt(String(Math.random() * 9999)),
-  });
+  // socket.emit("quotesSubscribe", {
+  //   real: 0,
+  //   reqId: parseInt(String(Math.random() * 9999)),
+  // });
 });
 
 //---- sort array by alphabetical order according to OutputName
@@ -189,9 +189,9 @@ quotes:
 
       The rest of the array is irrelevant for this task.
 */
-socket.on("quotes", (updates) => {
-  dynamicallyReceiveQuotes(updates);
-});
+// socket.on("quotes", (updates) => {
+//   dynamicallyReceiveQuotes(updates);
+// });
 
 // ---- Going through the arrays and taking what is in the 0 and 1 index
 
