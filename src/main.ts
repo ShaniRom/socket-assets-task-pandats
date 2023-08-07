@@ -27,6 +27,16 @@ interface WidgetSymbol {
   Category: string;
 }
 
+interface NewQuotes {
+  id: Number;
+  Bid: Number;
+}
+
+let connectButton = document.getElementById("connectButton");
+let disconnectButton = document.getElementById("disconnectButton");
+let symbolButton: any = document.querySelector(".data_titles--symbol");
+
+
 
 socket.on("connect", () => {
   console.log("Socket connected");
@@ -73,11 +83,11 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
         return 0;
       }
     );
-    let connectButton = document.getElementById("connectButton");
+    
     
     connectButton?.addEventListener("click", function () {
       socket.emit("connect"); 
-      symbolTitle.dataset.sort = "notPriceSorted";
+      symbolButton.dataset.sort = "notPriceSorted";
       renderData(sortedAlphabeticallyFormattedSymbols);
       sortAscDesBids(sortedAlphabeticallyFormattedSymbols);
 
@@ -90,7 +100,7 @@ function sortAlphabeticallyFormattedSymbols(formattedSymbols) {
 
 //---- disconnect button
 
-let disconnectButton = document.getElementById("disconnectButton");
+
 disconnectButton?.addEventListener("click", function () {
   socket.emit("disconnect");
 
@@ -98,14 +108,14 @@ disconnectButton?.addEventListener("click", function () {
     console.log("Socket disconnected ");
     clicked = false;
     renderData("");
-    symbolTitle.dataset.sort = "empty";
+    symbolButton.dataset.sort = "empty";
   });
 });
 
 //---- rendering the data from the socket
 function renderData(data) {
   try {
-    let rootPresentedData: any = document.querySelector("#rootPresentedData");
+    const rootPresentedData: any = document.querySelector("#rootPresentedData");
     updatingNewQuotes(newQuotes, data);
     let html = "";
     if (Array.isArray(data)) {
@@ -134,31 +144,30 @@ function renderData(data) {
 }
 
 //---- Sort current price in ascending order and descending order
-let symbolTitle: any = document.querySelector(".data_titles--symbol");
 let clicked = false;
 function sortAscDesBids(alphabeticalSort) {
   try {
     if (Array.isArray(alphabeticalSort)) {
-      symbolTitle?.addEventListener("click", function () {
+      symbolButton?.addEventListener("click", function () {
         
         let ascDesArray = [...alphabeticalSort];
         clicked = true;
         if (clicked) {
-          switch (symbolTitle.dataset.sort) {
+          switch (symbolButton.dataset.sort) {
             case "notPriceSorted":
             case "ascending":
               renderData(ascDesArray.sort((a, b) => a.Bid - b.Bid));
-              symbolTitle.dataset.sort = "descending";
+              symbolButton.dataset.sort = "descending";
 
               break;
             case "descending":
               renderData(ascDesArray.sort((a, b) => b.Bid - a.Bid));
-              symbolTitle.dataset.sort = "ascending";
+              symbolButton.dataset.sort = "ascending";
 
               break;
             default:
               clicked = false;
-              symbolTitle.dataset.sort = "empty";
+              symbolButton.dataset.sort = "empty";
               console.log("couldnt sort array");
           }
         }
@@ -185,10 +194,7 @@ socket.on("quotes", (updates) => {
 });
 
 // ---- Going through the arrays and taking what is in the 0 and 1 index
-interface NewQuotes {
-  id: Number;
-  Bid: Number;
-}
+
 
 let newQuotes: Array<NewQuotes> = [];
 function dynamicallyReceiveQuotes(updates: any) {
